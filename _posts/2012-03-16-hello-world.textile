@@ -1,0 +1,13 @@
+---
+layout: post
+title: Hello World
+---
+
+h2. {{ page.title }}
+
+First post has to be Hello World right? Well here it is, in my favorite language:
+
+{% highlight javascript %}
+console.log("Hello world!");
+{% endhighlight %}
+
