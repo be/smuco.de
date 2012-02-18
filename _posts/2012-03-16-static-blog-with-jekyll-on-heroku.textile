@@ -1,0 +1,132 @@
+---
+layout: post
+title: Creating a static blog with Jekyll on Heroku
+---
+
+h2. {{ page.title }}
+
+This blog was created using "Jekyll":https://github.com/mojombo/jekyll, a static site generator written in "Ruby":http://www.ruby-lang.org/. It uses "Rack":http://rack.rubyforge.org/ to interface with the webserver and is deployed to "Heroku":http://www.heroku.com/, a pretty awesome cloud application platform.
+
+So to set this up yourself you will have to have "GIT":http://help.github.com/mac-set-up-git/ installed. Then you need Ruby, I suggest using "RVM":https://rvm.beginrescueend.com/rvm/install/. Then get "RubyGems":http://rubygems.org/. Finally you should get a "Heroku":http://www.heroku.com/ account and set up the "Heroku CLI tools":http://devcenter.heroku.com/articles/heroku-command.
+
+So let's start off by creating a folder for your project:
+
+{% highlight bash %}
+mkdir jekyll_blog
+cd $_
+{% endhighlight %}
+
+Then install some required gems:
+
+{% highlight bash %}
+gem install jekyll
+gem install RedCloth
+{% endhighlight %}
+
+Now create a basic structure for your blog:
+
+{% highlight bash %}
+mkdir _layouts                  # html templates
+touch _layouts/default.html     # main template for the site
+touch _layouts/post.html        # template for the blog posts
+
+mkdir _posts                    # this is where your blog posts go
+mkdir css                       # for css stylesheets
+
+touch _config.yml               # jekyll configuration
+touch config.ru                 # rack configuration
+touch Gemfile                   # gem configuration
+touch Procfile                  # heroku configuration
+touch index.html                # the main html file for the blog
+{% endhighlight %}
+
+In _config.yml add the following:
+
+{% highlight bash %}
+markdown: rdiscount
+pygments: true
+{% endhighlight %}
+
+The first line tells Jekyll to use rdiscount as the markdown engine. The second that we want to use pygments for syntax highlighting. Here you can read more about "Jekyll Configuration":https://github.com/mojombo/jekyll/wiki/Configuration.
+
+In config.ru add the following so rack knows how to start Jekyll.
+
+{% highlight bash %}
+require "rack/jekyll"
+run Rack::Jekyll.new
+{% endhighlight %}
+
+In the Gemfile add the following dependency to rack-jekyll. I had to break the last line into 3 parts due to formatting, but you should probably add it on one line.
+
+{% highlight bash %}
+source :rubygems
+gem 'rack-jekyll', 
+  :git => 'https://github.com/adaoraul/rack-jekyll.git', 
+  :require => 'rack/jekyll'
+{% endhighlight %}
+
+I first tried to use the rack-jekyll gem in the RubyGems repository. But it had some issues and after reading "this post":http://mikemayo.org/2012/deploying-jekyll-sites-to-heroku-with-rack-jekyll I got it working with the latest version from GitHub.
+
+In order to get pygments working you will have to install it using "Easy Install":http://packages.python.org/distribute/easy_install.html:
+
+{% highlight bash %}
+easy_install Pygments
+{% endhighlight %}
+
+Now pygments will format source code for us, but we need some CSS styles:
+
+{% highlight bash %}
+pygmentize -S default -f html > css/pygments.css
+{% endhighlight %}
+
+Finally you need some content for index.html, default.html and post.html. You also need a initial post for your site. I suggest you have a look at the "initial version of this site":https://github.com/smucode/smuco.de/tree/initial_version and copy and change that to your liking.
+
+Now you should be able to start Jekyll with the command:
+
+{% highlight bash %}
+jekyll --server --pygments --auto
+{% endhighlight %}
+
+This will start Jekyll with autoreload enabled, so whenever you make a change, the running site will be updated within a few moments.
+
+Once you have tweaked the HTML and created your first post you can deploy it to Heroku. First, in the Procfile add the following which tells Heroku what to do:
+
+{% highlight bash %}
+web: bundle exec rackup config.ru -p $PORT
+{% endhighlight %}
+
+Then generate the site and try to start it using "Foreman":http://devcenter.heroku.com/articles/procfile#developing_locally_with_foreman. 
+
+{% highlight bash %}
+jekyll
+foreman start
+{% endhighlight %}
+
+If that works, initialize GIT and commit your changes:
+
+{% highlight bash %}
+git init
+git add .
+git commit -m"Initial Commit"
+{% endhighlight %}
+
+Then create a new Heroku application, and push the changes:
+
+{% highlight bash %}
+heroku create --stack cedar
+git push heroku master
+{% endhighlight %}
+
+And with that, your blog is hopefully deployed to the intertubes.
+
+Here are some of the resources I found helpful:
+* "Jekyll usage":https://github.com/mojombo/jekyll/wiki/usage
+* "Instant blog using Jekyll and Heroku":http://blog.crowdint.com/2010/08/02/instant-blog-using-jekyll-and-heroku.html
+* "Static blogging the Jekyll way":http://recursive-design.com/blog/2010/10/12/static-blogging-the-jekyll-way/
+* "Getting Started with Ruby on Heroku/Cedar":http://devcenter.heroku.com/articles/ruby
+
+The "Textile Reference":http://redcloth.org/hobix.com/textile/ is nice to have when writing your posts.
+
+Also you should have a look at the "many sites that use Jekyll":https://github.com/mojombo/jekyll/wiki/sites. Most link to the source.
+
+Happy Hacking!
