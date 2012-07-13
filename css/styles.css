@@ -1,8 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 
 body {
-    color: white;
-    background: black;
+    color: black;
     font-family: 'Droid Sans', sans-serif;
 }
 
@@ -10,11 +9,11 @@ h1, h2 {
     font-weight: normal;
     text-align: center;
     margin: 0;
-    padding: 30px 0 10px 0;
+    padding: 30px 0 25px 0;
 }
 
-h1 { font-size: 5em; }
-h1 a { color: white; }
+h1 { font-size: 7em; }
+h1 a { color: black; }
 h1 a:hover { background: black; }
 
 ul {
@@ -44,6 +43,7 @@ a:hover {
 
 p {
     text-align: justify;
+    line-height: 1.5em;
 }
 
 code {

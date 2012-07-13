@@ -1,0 +1,147 @@
+---
+layout: post
+title: Up and running with CoffeeScript, BusterJS and AMD
+---
+
+h2. {{ page.title }}
+
+This is a quick tutorial on how to get up and running with "CoffeeScript":http://coffeescript.org/, "BusterJS":http://busterjs.org/ for testing and dependency management using "AMD":http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition and "RequireJS":http://requirejs.org/. This is basically an awesome stack for doing test driven development for the web.
+
+If you just want to look at the code, check out this "GitHub repo":https://github.com/smucode/coffeescript-busterjs-amd.
+
+First lets create a simple folder structure:
+
+{% highlight bash %}
+mkdir cs_buster_amd
+mkdir cs_buster_amd/lib   # 3rd party libs
+mkdir cs_buster_amd/src   # Code
+mkdir cs_buster_amd/test  # Tests
+cd cs_buster_amd
+{% endhighlight %}
+
+Then lets install some node modules we require:
+
+{% highlight bash %}
+npm install -g buster         # BusterJS
+npm install buster-amd        # BusterJS AMD plugin
+{% endhighlight %}
+
+The -g option installs Buster globally so we can use it from the command line.
+
+Now lets install some libraries we need to /lib:
+
+* "require.js":http://requirejs.org/docs/release/2.0.4/minified/require.js        - RequireJS, Our AMD implementation
+* "cs.js":https://raw.github.com/jrburke/require-cs/master/cs.js             - RequireJS CoffeeScript plugin
+* "coffee-script.js":https://raw.github.com/jrburke/require-cs/master/coffee-script.js  - The CoffeeScript Compiler
+
+With our dependencies sorted out, lets create a simple RequireJS configuration in lib/require.conf.js:
+
+{% highlight javascript %}
+require.config({
+  paths: {
+    'cs': 'lib/cs',
+    'coffee-script': 'lib/coffee-script'
+  }
+});
+{% endhighlight %}
+
+Now we need a BusterJS configuration, /buster.js:
+
+{% highlight javascript %}
+module.exports['browser'] = {
+  environment: 'browser',
+
+  // libraries BusterJS should include and execute
+  libs: [
+    'lib/require.js',
+    'lib/require.conf.js'
+  ],
+
+  // libraries BusterJS should serve, but not execute
+  resources: [
+    'lib/cs.js',
+    'lib/coffee-script.js'
+  ],
+
+  // our source files
+  sources: [
+    'src/*.coffee'
+  ],
+
+  // our tests
+  tests: [
+    'test/*.coffee'
+  ],
+
+  // the BusterJS AMD plugin
+  extensions: [
+    require('buster-amd')
+  ],
+
+  // Path mapper so buster-amd will use the CS plugin
+  'buster-amd': {
+    pathMapper: function (path) {
+      return 'cs!' + path.replace(/^\//, '').replace(/\.coffee$/, '');
+    }
+  }
+};
+{% endhighlight %}
+
+Now lets create a simple testcase in test/foo_test.coffee:
+
+{% highlight coffeescript %}
+define ['cs!../src/foo'], (Foo) ->
+  buster.testCase 'Foo'
+    'injects greeting to the body': ->
+      new Foo()
+      body = document.getElementsByTagName('body')[0]
+      assert.equals body.innerHTML, 'Hello World'
+{% endhighlight %}
+
+It uses AMD to include the file we want to test. Then creates an instance of Foo, and asserts that it has injected the text 'Hello World' in the body element.
+
+Now lets implement the test in src/foo.coffee:
+
+{% highlight coffeescript %}
+define [], () ->
+  class Foo
+    constructor: ->
+      body = document.getElementsByTagName('body')[0]
+      body.innerHTML = 'Hello World'
+{% endhighlight %}
+
+To verify the tests first start the buster server:
+
+{% highlight bash %}
+buster server
+{% endhighlight %}
+
+Then open the page "http://localhost:1111/capture":http://localhost:1111/capture in a browser.
+
+And finally run the tests:
+
+{% highlight bash %}
+buster test
+{% endhighlight %}
+
+Hopefully this will tell you that our one testcase has successfully passed.
+
+Finally, to run the code in the browser, add the following /index.html:
+
+{% highlight html %}
+<!DOCTYPE html>
+
+<title>Foo</title>
+
+<script src="lib/require.js"></script>
+<script src="lib/require.conf.js"></script>
+<script>
+  require(['cs!src/foo'], function (Foo) {
+    new Foo();
+  });
+</script>
+{% endhighlight %}
+
+Check out all the code on "GitHub":https://github.com/smucode/coffeescript-busterjs-amd.
+
+Happy hacking!
