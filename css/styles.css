@@ -14,7 +14,7 @@ h1, h2 {
 
 h1 { font-size: 7em; }
 h1 a { color: black; }
-h1 a:hover { background: black; }
+h1 a:hover { color: #666; background: white; }
 
 ul {
     padding: 0;
