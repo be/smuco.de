@@ -7,15 +7,29 @@
     <h1><a class="internal" href="/">smucode</a></h1>
     <div id="content">
         <div id="post">
-<h2>Hello World</h2>
-<p>First post has to be Hello World right? Well here it is, in my favorite language:</p>
-<div class="highlight"><pre><code class="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">);</span>
+<h2>Git autocorrect is awesome</h2>
+<p>Being a somewhat sloppy typer from time to time, I have countless times mistyped the common git commands. Does this look familiar?</p>
+<div class="highlight"><pre><code class="bash">&gt;&gt; git puhs
+git: <span class="s1">&#39;puhs&#39;</span> is not a git command. See <span class="s1">&#39;git --help&#39;</span>.
+
+Did you mean this?
+  push
 </code></pre>
 </div>
-<p>29/08/2012: Update, can you spot the subtle difference? ;)</p>
-<div class="highlight"><pre><code class="coffeescript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s2">&quot;Hello world!&quot;</span>
+<p>I noticed that git actually guesses the command I really wanted to type. I would be so awesome if there was some sort of &#8220;I&#8217;m feeling lucky&#8221; feature in git.</p>
+<p>And there is!</p>
+<div class="highlight"><pre><code class="bash">git config --global help.autocorrect 5
 </code></pre>
 </div>
+<p>This will make git execute the command it thinks you are trying to type. The last parameter will make git wait half a second before executing the command, so tweak that to something you are comfortable with.</p>
+<div class="highlight"><pre><code class="bash">&gt;&gt; git puhs
+WARNING: You called a Git <span class="nb">command </span>named <span class="s1">&#39;puhs&#39;</span>, which does not exist.
+Continuing under the assumption that you meant <span class="s1">&#39;push&#39;</span>
+in 0.5 seconds automatically...
+Everything up-to-date
+</code></pre>
+</div>
+<p>Awesome :)</p>
 </div>
 
 <h2>Archive</h2>

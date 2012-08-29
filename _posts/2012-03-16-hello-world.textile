@@ -11,3 +11,8 @@ First post has to be Hello World right? Well here it is, in my favorite language
 console.log("Hello world!");
 {% endhighlight %}
 
+29/08/2012: Update, can you spot the subtle difference? ;)
+
+{% highlight coffeescript %}
+console.log "Hello world!"
+{% endhighlight %}

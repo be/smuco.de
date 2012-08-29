@@ -1,0 +1,36 @@
+---
+layout: post
+title: Git autocorrect is awesome
+---
+
+h2. {{ page.title }}
+
+Being a somewhat sloppy typer from time to time, I have countless times mistyped the common git commands. Does this look familiar?
+
+{% highlight bash %}
+>> git puhs
+git: 'puhs' is not a git command. See 'git --help'.
+
+Did you mean this?
+  push
+{% endhighlight %}
+
+I noticed that git actually guesses the command I really wanted to type. I would be so awesome if there was some sort of "I'm feeling lucky" feature in git. 
+
+And there is!
+
+{% highlight bash %}
+git config --global help.autocorrect 5
+{% endhighlight %}
+
+This will make git execute the command it thinks you are trying to type. The last parameter will make git wait half a second before executing the command, so tweak that to something you are comfortable with.
+
+{% highlight bash %}
+>> git puhs
+WARNING: You called a Git command named 'puhs', which does not exist.
+Continuing under the assumption that you meant 'push'
+in 0.5 seconds automatically...
+Everything up-to-date
+{% endhighlight %}
+
+Awesome :)

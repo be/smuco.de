@@ -8,6 +8,12 @@ layout: default
 
 <h2>Archive</h2>
 
-{% for post in site.posts %}
-  <li><span>{{ post.date | date_to_string }}</span> &raquo; <a class="internal" href="{{ post.url }}">{{ post.title }}</a></li>
-{% endfor %}
+<table>
+  {% for post in site.posts %}
+    <tr>
+        <td>{{ post.date | date_to_string }}</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="{{ post.url }}">{{ post.title }}</a></td>
+    </tr>
+  {% endfor %}
+</table>

@@ -7,135 +7,60 @@
     <h1><a class="internal" href="/">smucode</a></h1>
     <div id="content">
         <div id="post">
-  <h2>Up and running with CoffeeScript, BusterJS and <span class="caps">AMD</span></h2>
-<p>This is a quick tutorial on how to get up and running with <a href="http://coffeescript.org/">CoffeeScript</a>, <a href="http://busterjs.org/">BusterJS</a> for testing and dependency management using <a href="http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition"><span class="caps">AMD</span></a> and <a href="http://requirejs.org/">RequireJS</a>. This is basically an awesome stack for doing test driven development for the web.</p>
-<p>If you just want to look at the code, check out this <a href="https://github.com/smucode/coffeescript-busterjs-amd">GitHub repo</a>.</p>
-<p>First lets create a simple folder structure:</p>
-<div class="highlight"><pre><code class="bash">mkdir cs_buster_amd
-mkdir cs_buster_amd/lib   <span class="c"># 3rd party libs</span>
-mkdir cs_buster_amd/src   <span class="c"># Code</span>
-mkdir cs_buster_amd/test  <span class="c"># Tests</span>
-<span class="nb">cd </span>cs_buster_amd
-</code></pre>
-</div>
-<p>Then lets install some node modules we require:</p>
-<div class="highlight"><pre><code class="bash">npm install -g buster         <span class="c"># BusterJS</span>
-npm install buster-amd        <span class="c"># BusterJS AMD plugin</span>
-</code></pre>
-</div>
-<p>The -g option installs Buster globally so we can use it from the command line.</p>
-<p>Now lets install some libraries we need to /lib:</p>
-<ul>
-	<li><a href="http://requirejs.org/docs/release/2.0.4/minified/require.js">require.js</a>        &#8211; RequireJS, Our <span class="caps">AMD</span> implementation</li>
-	<li><a href="https://raw.github.com/jrburke/require-cs/master/cs.js">cs.js</a>             &#8211; RequireJS CoffeeScript plugin</li>
-	<li><a href="https://raw.github.com/jrburke/require-cs/master/coffee-script.js">coffee-script.js</a>  &#8211; The CoffeeScript Compiler</li>
-</ul>
-<p>With our dependencies sorted out, lets create a simple RequireJS configuration in lib/require.conf.js:</p>
-<div class="highlight"><pre><code class="javascript"><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
-  <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
-    <span class="s1">&#39;cs&#39;</span><span class="o">:</span> <span class="s1">&#39;lib/cs&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;coffee-script&#39;</span><span class="o">:</span> <span class="s1">&#39;lib/coffee-script&#39;</span>
-  <span class="p">}</span>
-<span class="p">});</span>
-</code></pre>
-</div>
-<p>Now we need a BusterJS configuration, /buster.js:</p>
-<div class="highlight"><pre><code class="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">[</span><span class="s1">&#39;browser&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">environment</span><span class="o">:</span> <span class="s1">&#39;browser&#39;</span><span class="p">,</span>
+  <h2>Git autocorrect is awesome</h2>
+<p>Being a somewhat sloppy typer from time to time, I have countless times mistyped the common git commands. Does this look familiar?</p>
+<div class="highlight"><pre><code class="bash">&gt;&gt; git puhs
+git: <span class="s1">&#39;puhs&#39;</span> is not a git command. See <span class="s1">&#39;git --help&#39;</span>.
 
-  <span class="c1">// libraries BusterJS should include and execute</span>
-  <span class="nx">libs</span><span class="o">:</span> <span class="p">[</span>
-    <span class="s1">&#39;lib/require.js&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lib/require.conf.js&#39;</span>
-  <span class="p">],</span>
-
-  <span class="c1">// libraries BusterJS should serve, but not execute</span>
-  <span class="nx">resources</span><span class="o">:</span> <span class="p">[</span>
-    <span class="s1">&#39;lib/cs.js&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lib/coffee-script.js&#39;</span>
-  <span class="p">],</span>
-
-  <span class="c1">// our source files</span>
-  <span class="nx">sources</span><span class="o">:</span> <span class="p">[</span>
-    <span class="s1">&#39;src/*.coffee&#39;</span>
-  <span class="p">],</span>
-
-  <span class="c1">// our tests</span>
-  <span class="nx">tests</span><span class="o">:</span> <span class="p">[</span>
-    <span class="s1">&#39;test/*.coffee&#39;</span>
-  <span class="p">],</span>
-
-  <span class="c1">// the BusterJS AMD plugin</span>
-  <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span>
-    <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;buster-amd&#39;</span><span class="p">)</span>
-  <span class="p">],</span>
-
-  <span class="c1">// Path mapper so buster-amd will use the CS plugin</span>
-  <span class="s1">&#39;buster-amd&#39;</span><span class="o">:</span> <span class="p">{</span>
-    <span class="nx">pathMapper</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="s1">&#39;cs!&#39;</span> <span class="o">+</span> <span class="nx">path</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\//</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\.coffee$/</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">};</span>
+Did you mean this?
+  push
 </code></pre>
 </div>
-<p>Now lets create a simple testcase in test/foo_test.coffee:</p>
-<div class="highlight"><pre><code class="coffeescript"><span class="nx">define</span> <span class="p">[</span><span class="s1">&#39;cs!../src/foo&#39;</span><span class="p">],</span> <span class="nf">(Foo) -&gt;</span>
-  <span class="nx">buster</span><span class="p">.</span><span class="nx">testCase</span> <span class="s1">&#39;Foo&#39;</span>
-    <span class="s1">&#39;injects greeting to the body&#39;</span><span class="o">:</span> <span class="o">-&gt;</span>
-      <span class="k">new</span> <span class="nx">Foo</span><span class="p">()</span>
-      <span class="nv">body = </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-      <span class="nx">assert</span><span class="p">.</span><span class="nx">equals</span> <span class="nx">body</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="s1">&#39;Hello World&#39;</span>
+<p>I noticed that git actually guesses the command I really wanted to type. I would be so awesome if there was some sort of &#8220;I&#8217;m feeling lucky&#8221; feature in git.</p>
+<p>And there is!</p>
+<div class="highlight"><pre><code class="bash">git config --global help.autocorrect 5
 </code></pre>
 </div>
-<p>It uses <span class="caps">AMD</span> to include the file we want to test. Then creates an instance of Foo, and asserts that it has injected the text &#8216;Hello World&#8217; in the body element.</p>
-<p>Now lets implement the test in src/foo.coffee:</p>
-<div class="highlight"><pre><code class="coffeescript"><span class="nx">define</span> <span class="p">[],</span> <span class="nf">() -&gt;</span>
-  <span class="k">class</span> <span class="nx">Foo</span>
-    <span class="nv">constructor: </span><span class="o">-&gt;</span>
-      <span class="nv">body = </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-      <span class="nv">body.innerHTML = </span><span class="s1">&#39;Hello World&#39;</span>
+<p>This will make git execute the command it thinks you are trying to type. The last parameter will make git wait half a second before executing the command, so tweak that to something you are comfortable with.</p>
+<div class="highlight"><pre><code class="bash">&gt;&gt; git puhs
+WARNING: You called a Git <span class="nb">command </span>named <span class="s1">&#39;puhs&#39;</span>, which does not exist.
+Continuing under the assumption that you meant <span class="s1">&#39;push&#39;</span>
+in 0.5 seconds automatically...
+Everything up-to-date
 </code></pre>
 </div>
-<p>To verify the tests first start the buster server:</p>
-<div class="highlight"><pre><code class="bash">buster server
-</code></pre>
-</div>
-<p>Then open the page <a href="http://localhost:1111/capture">http://localhost:1111/capture</a> in a browser.</p>
-<p>And finally run the tests:</p>
-<div class="highlight"><pre><code class="bash">buster <span class="nb">test</span>
-</code></pre>
-</div>
-<p>Hopefully this will tell you that our one testcase has successfully passed.</p>
-<p>Finally, to run the code in the browser, add the following /index.html:</p>
-<div class="highlight"><pre><code class="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-
-<span class="nt">&lt;title&gt;</span>Foo<span class="nt">&lt;/title&gt;</span>
-
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/require.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;lib/require.conf.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script&gt;</span>
-  <span class="nx">require</span><span class="p">([</span><span class="s1">&#39;cs!src/foo&#39;</span><span class="p">],</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">Foo</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">new</span> <span class="nx">Foo</span><span class="p">();</span>
-  <span class="p">});</span>
-<span class="nt">&lt;/script&gt;</span>
-</code></pre>
-</div>
-<p>Check out all the code on <a href="https://github.com/smucode/coffeescript-busterjs-amd">GitHub</a>.</p>
-<p>Happy hacking!</p>
+<p>Awesome :)</p>
 </div>
 
 <h2>Archive</h2>
 
-
-  <li><span>29 Jun 2012</span> &raquo; <a class="internal" href="/2012/06/29/coffeescript-busterjs-amd.html">Up and running with CoffeeScript, BusterJS and AMD</a></li>
-
-  <li><span>18 Mar 2012</span> &raquo; <a class="internal" href="/2012/03/18/static-blog-with-jekyll-on-heroku.html">Creating a static blog with Jekyll on Heroku</a></li>
-
-  <li><span>16 Mar 2012</span> &raquo; <a class="internal" href="/2012/03/16/hello-world.html">Hello World</a></li>
-
-
-
+<table>
+  
+    <tr>
+        <td>29 Aug 2012</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="/2012/08/29/git-autocorrect.html">Git autocorrect is awesome</a></td>
+    </tr>
+  
+    <tr>
+        <td>29 Jun 2012</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="/2012/06/29/coffeescript-busterjs-amd.html">Up and running with CoffeeScript, BusterJS and AMD</a></td>
+    </tr>
+  
+    <tr>
+        <td>18 Mar 2012</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="/2012/03/18/static-blog-with-jekyll-on-heroku.html">Creating a static blog with Jekyll on Heroku</a></td>
+    </tr>
+  
+    <tr>
+        <td>16 Mar 2012</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="/2012/03/16/hello-world.html">Hello World</a></td>
+    </tr>
+  
+</table>
     </div>
 </div>
 <a href="https://github.com/smucode"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
