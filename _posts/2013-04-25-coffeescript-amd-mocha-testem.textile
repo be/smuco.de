@@ -1,0 +1,39 @@
+---
+layout: post
+title: Boilerplate project using CS, AMD, Mocha and Testem
+---
+
+h2. {{ page.title }}
+
+I have with success used "BusterJS":http://smuco.de/2012/06/29/coffeescript-busterjs-amd.html on a few projects. But it has some shortcomings. Mainly it's quite unstable and as the number of tests starts to grow, it will simply not run.
+
+For my next project, I wanted to try something else so I went with a stack consisting of:
+
+*# "Mocha":http://visionmedia.github.io/mocha/ for testing
+*# "Chai":http://chaijs.com/ for assertions
+*# Automated using "Test'em":https://github.com/airportyh/testem#readme
+*# Written in "CoffeeScript":http://coffeescript.org/
+*# Organized using "RequireJS":http://requirejs.org/ and "AMD":https://github.com/amdjs/amdjs-api/wiki/AMD
+*# And "Jam":http://jamjs.org/ to help with 3rd party dependencies
+
+I created a "boilerplate on github":https://github.com/smucode/coffee-amd-mocha-testem-boilerplate you can test yourself:
+
+{% highlight bash %}
+npm install -g jamjs
+npm install -g testem
+jam install
+testem
+{% endhighlight %}
+
+It was not too hard to set up. I really like the way RequireJS handles all CoffeeScript compilation using the CS plugin.
+
+The thing I question the most is the use of Jam to handle all 3rd party dependencies. To get the boilerplate working I had to reference files within my dependencies (as in runner.html), which is quite sensitive to change.
+
+Just to be bleeding edge the boilerplate uses the latest version of all dependencies ;) So if things end up not working, try setting specific versions in package.json:
+
+*# chai 1.5.0
+*# cs 0.4.2
+*# coffee-script 1.3.3
+*# mocha 1.9.0
+
+I have not yet sorted how to dynamically load all the test files. Currently this is hardcoded in test/runner.coffe :/

@@ -25,12 +25,12 @@ npm install buster-amd        <span class="c"># BusterJS AMD plugin</span>
 </div>
 <p>The -g option installs Buster globally so we can use it from the command line.</p>
 <p>Now lets install some libraries we need to /lib:</p>
-<ul>
-	<li><a href="http://requirejs.org/docs/release/2.0.4/minified/require.js">require.js</a>        &#8211; RequireJS, Our <span class="caps">AMD</span> implementation</li>
-	<li><a href="https://raw.github.com/jrburke/require-cs/master/cs.js">cs.js</a>             &#8211; RequireJS CoffeeScript plugin</li>
-	<li><a href="https://raw.github.com/jrburke/require-cs/master/coffee-script.js">coffee-script.js</a>  &#8211; The CoffeeScript Compiler</li>
-</ul>
-<p>With our dependencies sorted out, lets create a simple RequireJS configuration in lib/require.conf.js:</p>
+
+	<ol>
+		<li><a href="http://requirejs.org/docs/release/2.0.4/minified/require.js">require.js</a>        &#8211; RequireJS, Our <span class="caps">AMD</span> implementation</li>
+		<li><a href="https://raw.github.com/jrburke/require-cs/master/cs.js">cs.js</a>             &#8211; RequireJS CoffeeScript plugin</li>
+		<li><a href="https://raw.github.com/jrburke/require-cs/master/coffee-script.js">coffee-script.js</a>  &#8211; The CoffeeScript Compiler</li>
+	</ol><p>With our dependencies sorted out, lets create a simple RequireJS configuration in lib/require.conf.js:</p>
 <div class="highlight"><pre><code class="javascript"><span class="nx">require</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
   <span class="nx">paths</span><span class="o">:</span> <span class="p">{</span>
     <span class="s1">&#39;cs&#39;</span><span class="o">:</span> <span class="s1">&#39;lib/cs&#39;</span><span class="p">,</span>
@@ -128,6 +128,12 @@ npm install buster-amd        <span class="c"># BusterJS AMD plugin</span>
 <h2>Archive</h2>
 
 <table>
+  
+    <tr>
+        <td>25 Apr 2013</td>
+        <td>&raquo;</td>
+        <td><a class="internal" href="/2013/04/25/coffeescript-amd-mocha-testem.html">Boilerplate project using CS, AMD, Mocha and Testem</a></td>
+    </tr>
   
     <tr>
         <td>29 Aug 2012</td>

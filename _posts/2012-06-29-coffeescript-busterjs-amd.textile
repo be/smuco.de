@@ -30,9 +30,9 @@ The -g option installs Buster globally so we can use it from the command line.
 
 Now lets install some libraries we need to /lib:
 
-* "require.js":http://requirejs.org/docs/release/2.0.4/minified/require.js        - RequireJS, Our AMD implementation
-* "cs.js":https://raw.github.com/jrburke/require-cs/master/cs.js             - RequireJS CoffeeScript plugin
-* "coffee-script.js":https://raw.github.com/jrburke/require-cs/master/coffee-script.js  - The CoffeeScript Compiler
+*# "require.js":http://requirejs.org/docs/release/2.0.4/minified/require.js        - RequireJS, Our AMD implementation
+*# "cs.js":https://raw.github.com/jrburke/require-cs/master/cs.js             - RequireJS CoffeeScript plugin
+*# "coffee-script.js":https://raw.github.com/jrburke/require-cs/master/coffee-script.js  - The CoffeeScript Compiler
 
 With our dependencies sorted out, lets create a simple RequireJS configuration in lib/require.conf.js:
 

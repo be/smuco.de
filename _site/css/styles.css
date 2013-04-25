@@ -22,7 +22,7 @@ ul {
 }
 
 li {
-    list-style-type: none;
+    list-style-type: circle;
 }
 
 #body {
@@ -31,14 +31,14 @@ li {
 }
 
 a {
-    color: #69c;
-    padding: 0 2px;
+    color: #874916;
+    padding: 0 3px;
     text-decoration: none;
 }
 
 a:hover {
     color: white;
-    background: #369;
+    background: #D67627;
 }
 
 p {
