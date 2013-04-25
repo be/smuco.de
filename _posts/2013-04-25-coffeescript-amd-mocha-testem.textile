@@ -36,4 +36,4 @@ Just to be bleeding edge the boilerplate uses the latest version of all dependen
 *# coffee-script 1.3.3
 *# mocha 1.9.0
 
-I have not yet sorted how to dynamically load all the test files. Currently this is hardcoded in test/runner.coffe :/
+Happy hacking!
