@@ -1,7 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 
 body {
+    margin: 0;
+    padding: 0;
     color: black;
+    background: #C0392B;
     font-family: 'Droid Sans', sans-serif;
 }
 
@@ -27,18 +30,23 @@ li {
 
 #body {
     width: 600px;
+    opacity: 0.95;
     margin: 0 auto;
+    padding: 0 80px;
+    background: white;
+    border-left: 20px solid #E74C3C;
+    border-right: 20px solid #E74C3C;
 }
 
 a {
-    color: #874916;
+    color: #C0392B;
     padding: 0 3px;
     text-decoration: none;
 }
 
 a:hover {
     color: white;
-    background: #D67627;
+    background: #E74C3C;
 }
 
 p {
